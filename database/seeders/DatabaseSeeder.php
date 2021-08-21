@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeesSeeder::class);
         $this->command->info('Employees Table Seeded Successfully!');
       
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
     }
 }
