@@ -39,7 +39,7 @@ class EmployeesSeeder extends Seeder
                 'company_id'=>1,
                 'type' => EmployeeType::MANAGER,
                 'joining_salary' => 55000,
-                'working_hours' => '09:00',
+                'working_hours' => '09:00:00',
                 'created_at' => \Carbon\Carbon::now('utc'),
                 'updated_at' => \Carbon\Carbon::now('utc'),
             ],
