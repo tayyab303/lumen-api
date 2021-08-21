@@ -243,17 +243,21 @@ class AuthController extends Controller
     public function memberForgotPassword(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|string',
+            'email' => 'required|email',
         ]);
 
         try {
             $email = $request->get('email');
-            $user = User::where('email', $email)->where('type', UserType::CUSTOMER)->first();
-            if (!$user) {
-                $res = $this->_user->resetMemberPasswordMail($email);
-                return response()->json(['data' => $res,  'message' => HttpStatusCode::$statusTexts[HttpStatusCode::OK]], HttpStatusCode::OK);
-            } else {
+            $user = User::where('email','=', $email)->first();
+            if ($user) {
+               $this->_user->resetMemberPasswordMail($email);
+                return response()->json(['data' => "email sent",  'message' => HttpStatusCode::$statusTexts[HttpStatusCode::OK]], HttpStatusCode::OK);
+            } else if($user =  User::where('email','!=', $email)->first()){
                 return response()->json(['message' => HttpStatusCode::$statusTexts[HttpStatusCode::NOT_FOUND]], HttpStatusCode::NOT_FOUND);
+            }
+            else{
+                return response()->json(['message' => HttpStatusCode::$statusTexts[HttpStatusCode::NOT_FOUND]], HttpStatusCode::NOT_FOUND);
+
             }
         } catch (\Exception $e) {
             return response()->json(['message' => HttpStatusCode::$statusTexts[HttpStatusCode::INTERNAL_SERVER_ERROR]], HttpStatusCode::INTERNAL_SERVER_ERROR);
